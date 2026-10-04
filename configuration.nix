@@ -127,7 +127,7 @@
        tree
      ];
   };
-  
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -180,10 +180,9 @@
   jovian.steam = {
     enable = true;
     user = "bezie";
-    autoStart = false; # false = pick "Gaming Mode" at the login screen; true = boot straight into it
-    # desktopSession = "plasma"; # what "Switch to Desktop" goes to (needed if autoStart = true)
+    autoStart = true; # false = pick "Gaming Mode" at the login screen; true = boot straight into it
+    desktopSession = "plasma"; # what "Switch to Desktop" goes to (needed if autoStart = true)
   };
   system.stateVersion = "26.05";
 
 }
-
