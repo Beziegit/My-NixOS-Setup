@@ -1,6 +1,5 @@
-# Edit this configuration file to define what should be installed on
-# your system. Help is available in the configuration.nix(5) man page, on
-# https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
+# The https://search.nixos.org/options page and in the NixOS manual (`nixos-help`).
+# to edit this configuration file to define what my system should install
 
 { config, lib, pkgs, ... }:
 
@@ -26,10 +25,6 @@
 
   # Configure network connections interactively with nmcli or nmtui.
   networking.networkmanager.enable = true;
-
-  # Set your time zone.
-  # time.timeZone = "Europe/Amsterdam";
-
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
@@ -44,9 +39,6 @@
 
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
-
-
-  
 
   # Configure keymap in X11
   # services.xserver.xkb.layout = "eng";
@@ -63,9 +55,8 @@
   #   pulse.enable = true;
   # };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.libinput.enable = true;
-
+  # List packages installed in system profile.
+  # You can use https://search.nixos.org/ to find more packages (and options).
     environment.systemPackages = with pkgs; [
     lsb-release  # Provides 'lsb_release' used by Haxe/Lime engine systems
     mesa-demos   # Provides 'glxinfo' parsed during graphics detection
@@ -136,16 +127,7 @@
        tree
      ];
   };
-
-  # programs.firefox.enable = true;
-
-  # List packages installed in system profile.
-  # You can use https://search.nixos.org/ to find more packages (and options).
-  # environment.systemPackages = with pkgs; [
-  #   vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #   wget
-  # ];
-
+  
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -194,7 +176,7 @@
   nixpkgs.config.allowUnfree = true;
   programs.steam.enable = true;
   services.envfs.enable = true;
-
+  #saw a different project that might change the gamescope related stuff
   jovian.steam = {
     enable = true;
     user = "bezie";
