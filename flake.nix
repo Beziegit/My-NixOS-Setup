@@ -1,5 +1,5 @@
 {
-  description = "NixOS configuration with CachyOS Kernel + SteamNix (Jovian)";
+  description = "NixOS configuration with CachyOS Kernel(Jovian)";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
