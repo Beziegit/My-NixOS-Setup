@@ -49,7 +49,7 @@
   
 
   # Configure keymap in X11
-  # services.xserver.xkb.layout = "lv";
+  # services.xserver.xkb.layout = "eng";
   # services.xserver.xkb.options = "eurosign:e,caps:escape";
 
   # Enable CUPS to print documents.
@@ -71,12 +71,12 @@
     mesa-demos   # Provides 'glxinfo' parsed during graphics detection
   ];
 
-  # ENVIRONMENT PATH ENHANCEMENT FOR UNPATCHED BINARIES
+  # Environment path enhancement for unpatched binaries
   environment.sessionVariables = {
     NIX_LD_LIBRARY_PATH = "/run/current-system/sw/share/nix-ld/lib";
     PATH = [ "/run/current-system/sw/bin" ];
   };
-  # WRAP ARK GRAPHICAL APPLICATION WITH UNRAR SUPPORT PATHS
+  #graphical application with unrar support paths
   nixpkgs.config.packageOverrides = pkgs: {
     kdePackages = pkgs.kdePackages // {
       ark = pkgs.kdePackages.ark.overrideAttrs (oldAttrs: {
@@ -87,7 +87,7 @@
       });
     };
   };
-  # NIX-LD DYNAMIC ENVIRONMENT LIBRARIES
+  # nix-ld libraries
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs; [
     # Core system & compiler runtime
@@ -95,7 +95,7 @@
     zlib
     glib
 
-    # X11 / Windowing (Updated to new naming formats to avoid deprecation warnings)
+    # X11 / Windowing
     libx11
     libxext
     libxcursor
@@ -113,7 +113,7 @@
     libGLU
     vulkan-loader
 
-    # Audio (Crucial for rhythm games like FNF)
+    # Audio
     alsa-lib
     libpulseaudio
     openal
@@ -201,7 +201,7 @@
     autoStart = false; # false = pick "Gaming Mode" at the login screen; true = boot straight into it
     # desktopSession = "plasma"; # what "Switch to Desktop" goes to (needed if autoStart = true)
   };
-  system.stateVersion = "26.05"; # Did you read the comment?
+  system.stateVersion = "26.05";
 
 }
 
