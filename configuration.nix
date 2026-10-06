@@ -1,16 +1,18 @@
 # The https://search.nixos.org/options page and in the NixOS manual (`nixos-help`).
 # to edit this configuration file to define what my system should install
-# Jovian and the CachyOS kernel are all provided by flake.nix
-{ config, lib, pkgs, ... }:
+# Merged with SteamNix (https://github.com/SteamNix/SteamNix)
+# Note: hardware-configuration.nix, Jovian and the CachyOS kernel are all provided by flake.nix
+{ config, lib, pkgs, inputs, ... }:
 
 {
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Boot
+  boot.tmp.cleanOnBoot = true;
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.configurationLimit = 4;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.timeout = 7;
+  boot.loader.timeout = 6;
   hardware.amdgpu.initrd.enable = false;
 
   boot.kernelParams = [ "quiet" ];
@@ -24,25 +26,41 @@
     verbose        = false;
   };
   boot.consoleLogLevel = 0;
-
+  boot.plymouth.enable = true;
   # Packages
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
     lsb-release  # Provides 'lsb_release' used by Haxe/Lime engine systems
     mesa-demos   # Provides 'glxinfo' parsed during graphics detection
     git
+    xwayland-satellite
+    modrinth-app
+    spotify
   ];
   # Environment
+  #
   environment.sessionVariables = {
     NIX_LD_LIBRARY_PATH = "/run/current-system/sw/share/nix-ld/lib";
     PATH = [ "/run/current-system/sw/bin" ];
 
+    NIXOS_OZONE_WL = "1";
     PROTON_USE_NTSYNC        = "1";
     PROTON_ENABLE_AMD_AGS    = "1";
     ENABLE_GAMESCOPE_WSI     = "1";
     STEAM_MULTIPLE_XWAYLANDS = "1";
   };
+  xdg.portal = {
+  enable = true;
+  extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  # If your host compositor is wlroots-based (like Sway/Hyprland), also add:
+  # extraPortals = [ pkgs.xdg-desktop-portal-wlr ];
 
+  config = {
+    common = {
+      default = [ "gtk" ];
+    };
+  };
+};
   # Graphical application with unrar support paths
   nixpkgs.config.packageOverrides = pkgs: {
     kdePackages = pkgs.kdePackages // {
@@ -53,8 +71,13 @@
         '';
       });
     };
+  spotify = pkgs.spotify.overrideAttrs (oldAttrs: {
+      postFixup = (oldAttrs.postFixup or "") + ''
+        wrapProgram $out/bin/spotify \
+          --add-flags "--no-sandbox --disable-gpu"
+      '';
+    });
   };
-
   # Nix-ld libraries
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs; [
@@ -75,11 +98,13 @@
     libxdamage
     libxtst
     libxscrnsaver
+    libxkbcommon
 
     # Graphics / OpenGL
     libGL
     libGLU
     vulkan-loader
+    libx11
 
     # Audio
     alsa-lib
@@ -98,6 +123,7 @@
   ];
   # Programs
   programs.steam.enable = true;
+  programs.steam.extraCompatPackages = [ pkgs.proton-ge-bin ];
   # Users
   users.users.bezie = {
     isNormalUser = true;
@@ -132,6 +158,7 @@
   virtualisation.libvirtd.enable = true;
   # networking.hostName = "nixos"; # Define your hostname.
   networking.networkmanager.enable = true;
+  hardware.graphics.enable = true;
   # System version
   system.stateVersion = "26.05";
 }
