@@ -52,8 +52,6 @@
   xdg.portal = {
   enable = true;
   extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-  # If your host compositor is wlroots-based (like Sway/Hyprland), also add:
-  # extraPortals = [ pkgs.xdg-desktop-portal-wlr ];
 
   config = {
     common = {
